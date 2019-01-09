@@ -9,6 +9,7 @@ const pool = new Pool({
     port: 5432,
 })
 
+// /evento/:evento
 const getEvent = (request, response) => {
     const id = request.params.evento
     pool.query('SELECT * FROM event_log where id = $1', [id],  (error, results) => {
@@ -19,6 +20,7 @@ const getEvent = (request, response) => {
     })
 }
 
+//
 const getAllEvents = (request, response) => {
     const entidad = request.params.entidad
     pool.query('SELECT * FROM event_log where entidad = $1', [entidad],  (error, results) => {
@@ -28,26 +30,8 @@ const getAllEvents = (request, response) => {
         response.status(200).json(results.rows)
     })
 }
-const rowToTemp = (row) => {
-    tmp = {
-        lon: row[0],
-        lat: row[1],
-        weather_main: row[2],
-        weather_desc: row[3],
-        temp: row[4],
-        pressure: row[5],
-        humidity: row[6],
-        temp_min: row[7],
-        temp_max: row[8],
-        visibility: row[9],
-        wind_speed: row[10],
-        clouds: row[11],
-        rain: row[12],
-        name: row[13],
-    }
-    return tmp
 
-}
+// /temperatura?lat=xxx&lon=xxx
 const getTemp = (request, response) => {
     lat = parseFloat(request.query.lat);
     lon = parseFloat(request.query.lon);
@@ -100,6 +84,7 @@ const getTemp = (request, response) => {
     }
 }
 
+// /evento
 const allEvents = (request, response) => {
     pool.query('SELECT DISTINCT id from event_log', (error, result)=> {
         if (error){
