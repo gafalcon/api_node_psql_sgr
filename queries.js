@@ -8,7 +8,7 @@ const pool = new Pool({
     host: configs.host,
     database: configs.database,
     password: configs.password,
-    port: configs.port
+    port: configs.dbport
 })
 
 // /evento/:evento
