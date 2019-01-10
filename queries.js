@@ -1,18 +1,21 @@
 const Pool = require('pg').Pool
 const axios = require('axios');
 const APPID = "356c02b904d145c0d48ab39f8f73c056"
+const configs = require('./configs')
+
 const pool = new Pool({
-    user: 'gabo',
-    host: 'localhost',
-    database: 'testDb',
-    // password: 'password',
-    port: 5432,
+    user: configs.user,
+    host: configs.host,
+    database: configs.database,
+    password: configs.password,
+    port: configs.port
 })
 
 // /evento/:evento
 const getEvent = (request, response) => {
     const id = request.params.evento
-    pool.query('SELECT * FROM event_log where id = $1', [id],  (error, results) => {
+    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,estado,localizacion,evaluacion"
+    pool.query('SELECT ' + columns + ' FROM event_log where id = $1', [id],  (error, results) => {
         if (error) {
             throw error
         }
@@ -96,9 +99,19 @@ const allEvents = (request, response) => {
 
 }
 
+const allData = (request, response) => {
+    pool.query('SELECT * from event_log')
+        .then((res) => response.status(200).json(res.rows))
+        .catch((error) => {
+            console.log(err)
+            response.status(500).json({error: "error"})
+        })
+}
+
 
 module.exports = {
     getEvent,
     allEvents,
     getTemp,
+    allData
 }
