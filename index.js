@@ -22,6 +22,8 @@ app.get('/evento', db.allEvents)
 
 app.get('/temperatura', db.getTemp)
 
+app.get('/all', db.allData)
+
 app.listen(port, host_url, () => {
     console.log(`App running on port ${port}.`)
 })

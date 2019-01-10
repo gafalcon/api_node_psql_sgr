@@ -1,5 +1,4 @@
 const Pool = require('pg').Pool
-const axios = require('axios');
 const APPID = "356c02b904d145c0d48ab39f8f73c056"
 const configs = require('./configs')
 
@@ -100,11 +99,15 @@ const allEvents = (request, response) => {
 }
 
 const allData = (request, response) => {
-    pool.query('SELECT * from event_log')
-        .then((res) => response.status(200).json(res.rows))
-        .catch((error) => {
+    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,estado,localizacion,evaluacion"
+    query = {text:'SELECT '+columns+' from event_log', rowMode: 'array'}
+    pool.query(query)
+        .then((res) => {
+            response.status(200).json(res.rows)
+        })
+        .catch((err) => {
             console.log(err)
-            response.status(500).json({error: "error"})
+            response.status(500).json({error: err})
         })
 }
 
