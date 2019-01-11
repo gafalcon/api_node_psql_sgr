@@ -16,7 +16,7 @@ const getEvent = (request, response) => {
     columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,localizacion,evaluacion"
     pool.query('SELECT ' + columns + ' FROM event_log where id = $1', [id],  (error, results) => {
         if (error) {
-            throw error
+            response.status(500).json({error: "error consultando db"})
         }
         response.status(200).json(results.rows)
     })
@@ -27,7 +27,8 @@ const getAllEvents = (request, response) => {
     const entidad = request.params.entidad
     pool.query('SELECT * FROM event_log where entidad = $1', [entidad],  (error, results) => {
         if (error) {
-            throw error
+            console.log(error)
+            response.status(500).json({error: "error consultando db"})
         }
         response.status(200).json(results.rows)
     })
@@ -90,7 +91,8 @@ const getTemp = (request, response) => {
 const allEvents = (request, response) => {
     pool.query('SELECT DISTINCT id from event_log', (error, result)=> {
         if (error){
-            throw error
+            console.log(error)
+            response.status(500).json({error: "error consultando db"})
         }
         response.status(200).json(result.rows)
 
