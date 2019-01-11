@@ -13,7 +13,7 @@ const pool = new Pool({
 // /evento/:evento
 const getEvent = (request, response) => {
     const id = request.params.evento
-    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,estado,localizacion,evaluacion"
+    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,localizacion,evaluacion"
     pool.query('SELECT ' + columns + ' FROM event_log where id = $1', [id],  (error, results) => {
         if (error) {
             throw error
@@ -99,7 +99,7 @@ const allEvents = (request, response) => {
 }
 
 const allData = (request, response) => {
-    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,estado,localizacion,evaluacion"
+    columns = "id,registration_date,entidad,lat,lng,mg,z,fecha,localizacion,evaluacion"
     query = {text:'SELECT '+columns+' from event_log', rowMode: 'array'}
     pool.query(query)
         .then((res) => {
